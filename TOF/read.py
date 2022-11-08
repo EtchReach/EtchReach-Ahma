@@ -1,4 +1,22 @@
+#!/usr/bin/env python
+
+import time
+import sys
+import signal
+
 import VL53L1X
+
+
+print("""distance.py
+
+Display the distance read from the sensor.
+
+Uses the "Short Range" timing budget by default.
+
+Press Ctrl+C to exit.
+
+""")
+
 
 # Open and start the VL53L1X sensor.
 # If you've previously used change-address.py then you
@@ -21,12 +39,21 @@ tof.start_ranging(1)  # Start ranging
                       # 2 = Medium Range
                       # 3 = Long Range
 
-# Grab the range in mm, this function will block until
-# a reading is returned.
-distance_in_mm = tof.get_distance()
-
-print(f"Distance: {distance_in_mm}")
-
-tof.stop_ranging()
+running = True
 
 
+def exit_handler(signal, frame):
+    global running
+    running = False
+    tof.stop_ranging()
+    print()
+    sys.exit(0)
+
+
+# Attach a signal handler to catch SIGINT (Ctrl+C) and exit gracefully
+signal.signal(signal.SIGINT, exit_handler)
+
+while running:
+    distance_in_mm = tof.get_distance()
+    print("Distance: {}mm".format(distance_in_mm))
+    time.sleep(0.1)
