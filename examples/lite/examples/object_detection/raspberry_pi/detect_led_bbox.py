@@ -31,8 +31,7 @@ GPIO.setwarnings(False)
 led = 26
 GPIO.setup(led, GPIO.OUT)
 
-size_checks=3
-
+size_checks=4
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
@@ -118,7 +117,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                     print("areas growing!!!")
                     GPIO.output(led,1)
                 else:
-                    # time.sleep(3)
+                    time.sleep(3)
                     GPIO.output(led,0)
 
         # Draw keypoints and edges on input image
