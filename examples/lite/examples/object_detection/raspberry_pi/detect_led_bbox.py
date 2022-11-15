@@ -31,7 +31,7 @@ GPIO.setwarnings(False)
 led = 26
 GPIO.setup(led, GPIO.OUT)
 
-size_checks=5
+size_checks=3
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
@@ -100,6 +100,9 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             if detection.categories[0].category_name == "bicycle":
                 bbox_area = detection.bounding_box.width * detection.bounding_box.height
                 bbox_areas.append(bbox_area)
+                if len(bbox_areas) > 30:
+                    bbox_areas.pop(0)
+                print(bbox_areas)
                 growing = True
                 for x in range(size_checks):
                     this_area = bbox_areas[-1-x]
