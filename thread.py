@@ -2,6 +2,7 @@ import logging
 # import threading
 from multiprocessing import Pool
 import time
+from examples.lite.examples.object_detection.raspberry_pi.detect_led_bbox import main
 
 #!/usr/bin/env python
 
@@ -93,8 +94,9 @@ if __name__ == "__main__":
     # # x.join()
     # logging.info("Main    : all done")
 
-    pool = Pool(processes=1)
+    pool = Pool(processes=2)
     r1 = pool.apply_async(TOF)
+    r2 = pool.apply_async(main)
     
     pool.close()
     pool.join()
