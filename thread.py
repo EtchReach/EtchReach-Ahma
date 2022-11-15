@@ -1,5 +1,6 @@
 import logging
-import threading
+# import threading
+from multiprocessing import Pool
 import time
 
 #!/usr/bin/env python
@@ -80,15 +81,18 @@ def thread_function(name):
     logging.info("Thread %s: finishing", name)
 
 if __name__ == "__main__":
-    format = "%(asctime)s: %(message)s"
-    logging.basicConfig(format=format, level=logging.INFO,
-                        datefmt="%H:%M:%S")
+    # format = "%(asctime)s: %(message)s"
+    # logging.basicConfig(format=format, level=logging.INFO,
+    #                     datefmt="%H:%M:%S")
 
-    logging.info("Main    : before creating thread")
-    x = threading.Thread(target=TOF)
-    logging.info("Main    : before running thread")
-    x.start()
-    logging.info("Main    : wait for the thread to finish")
-    # x.join()
-    logging.info("Main    : all done")
+    # logging.info("Main    : before creating thread")
+    # x = threading.Thread(target=TOF)
+    # logging.info("Main    : before running thread")
+    # x.start()
+    # logging.info("Main    : wait for the thread to finish")
+    # # x.join()
+    # logging.info("Main    : all done")
+
+    pool = Pool(processes=1)
+    r1 = pool.apply_async(TOF)
     
