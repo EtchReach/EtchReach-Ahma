@@ -86,6 +86,7 @@ while running:
     avg_speed = sum(speed_arr) / len(speed_arr)
     if avg_speed < -30:
         GPIO.output(led, 1)
+        print("Buzzing!")
     else:
         GPIO.output(led, 0)
 
