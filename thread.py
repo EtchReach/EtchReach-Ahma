@@ -2,7 +2,7 @@ import logging
 # import threading
 from multiprocessing import Pool
 import time
-from examples.lite.examples.object_detection.raspberry_pi.detect_led_bbox import main
+from raspberry_pi.detect_led_bbox import main
 
 #!/usr/bin/env python
 
