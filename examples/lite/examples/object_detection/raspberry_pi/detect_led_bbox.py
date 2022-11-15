@@ -108,15 +108,15 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                         last_area = bbox_areas[-2-x]
                     except IndexError:
                         growing = False
+                        print("areas array too short, breaking")
                         break
-                        print("areas array too short")
                     if this_area < last_area:
                         growing = False
-                        print("areas not growing")
+                        print("areas not growing, breaking")
+                        break
                 if growing:
                     print("areas growing!!!")
                     GPIO.output(led,1)
-                else:
                     time.sleep(3)
                     GPIO.output(led,0)
 
