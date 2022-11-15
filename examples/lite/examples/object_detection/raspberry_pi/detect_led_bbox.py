@@ -128,7 +128,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             end_time = time.time()
             fps = fps_avg_frame_count / (end_time - start_time)
             start_time = time.time()
-            print(fps+" fps")
+            print(str(fps)+" fps")
             counter = 0
         # Show the FPS
         # fps_text = 'FPS = {:.1f}'.format(fps)
