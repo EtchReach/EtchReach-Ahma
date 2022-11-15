@@ -6,6 +6,14 @@ import signal
 
 import VL53L1X
 
+# GPIO initialization
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# LED config
+led = 26
+GPIO.setup(led, GPIO.OUT)
 
 print("""distance.py
 
@@ -31,7 +39,7 @@ tof.open()
 # and inter-measurement time in milliseconds.
 # If you uncomment the line below to set a budget you
 # should use `tof.start_ranging(0)`
-tof.set_timing(66000, 70)
+# tof.set_timing(66000, 70)
 
 tof.start_ranging(3)  # Start ranging
                       # 0 = Unchanged
@@ -69,11 +77,17 @@ while running:
 
     speed_arr = speed_arr[-avg_value:] if len_speed_arr > 10 else speed_arr
 
-    print("Distance: {}mm".format(distance_in_mm))
-    print(f"Current speed: {speed}mm/s")
-    print(f"Speed Arr: {speed_arr}")
+    # print("Distance: {}mm".format(distance_in_mm))
+    # print(f"Current speed: {speed}mm/s")
+    # print(f"Speed Arr: {speed_arr}")
+
     print(f"Average speed: {sum(speed_arr)/len(speed_arr)}mm/s")
 
+    avg_speed = sum(speed_arr) / len(speed_arr)
+    if avg_speed < -30:
+        GPIO.output(led, 1)
+    else:
+        GPIO.output(led, 0)
 
     prev_distance_in_mm = distance_in_mm
 
