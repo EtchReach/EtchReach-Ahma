@@ -117,7 +117,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                 if growing:
                     print("areas growing!!!")
                     GPIO.output(led,1)
-                    time.sleep(3)
+                else:
+                    # time.sleep(3)
                     GPIO.output(led,0)
                     bbox_areas=[]
 
