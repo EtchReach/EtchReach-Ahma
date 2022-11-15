@@ -99,7 +99,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         for detection in detection_result.detections:
             if detection.categories[0].category_name == "bicycle":
                 names.append(category_name)
-                bbox_area = detection.bounding_box.width * detection.bounding_box
+                bbox_area = detection.bounding_box.width * detection.bounding_box.height
                 bbox_areas.append(bbox_area)
                 growing = True
                 for x in range(size_checks):
@@ -115,6 +115,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                     GPIO.output(led,1)
                     time.sleep(1)
                     GPIO.output(led,0)
+                    bbox_areas=[]
 
         print(names)
 
