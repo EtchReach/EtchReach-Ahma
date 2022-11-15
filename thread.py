@@ -1,7 +1,7 @@
 import logging
 import threading
 import time
-from ..TOF.thread import main 
+from TOF.thread import main 
 
 def thread_function(name):
     logging.info("Thread %s: starting", name)
