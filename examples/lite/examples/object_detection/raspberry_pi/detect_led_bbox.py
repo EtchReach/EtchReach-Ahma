@@ -31,7 +31,7 @@ GPIO.setwarnings(False)
 led = 26
 GPIO.setup(led, GPIO.OUT)
 
-size_checks=1
+size_checks=5
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
