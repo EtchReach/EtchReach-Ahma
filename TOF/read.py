@@ -6,6 +6,14 @@ import signal
 
 import VL53L1X
 
+# GPIO initialization
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# LED config
+led = 26
+GPIO.setup(led, GPIO.OUT)
 
 print("""distance.py
 
@@ -68,10 +76,16 @@ while running:
     avg_value = 10
 
     speed_arr = speed_arr[-avg_value:] if len_speed_arr > 10 else speed_arr
-
-    print("Distance: {}mm".format(distance_in_mm))
-    print(f"Current speed: {speed}mm/s")
-    print(f"Speed Arr: {speed_arr}")
+    
+    # print("Distance: {}mm".format(distance_in_mm))
+    # print(f"Current speed: {speed}mm/s")
+    # print(f"Speed Arr: {speed_arr}")
+    avg_speed = sum(speed_arr) / len(speed_arr)
+    if avg_speed < -30:
+        GPIO.output(led, 1)
+    else:
+        GPIO.output(led, 0)
+    
     print(f"Average speed: {sum(speed_arr)/len(speed_arr)}mm/s")
 
 
