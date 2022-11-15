@@ -98,7 +98,6 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         names = []
         for detection in detection_result.detections:
             if detection.categories[0].category_name == "bicycle":
-                names.append(category_name)
                 bbox_area = detection.bounding_box.width * detection.bounding_box.height
                 bbox_areas.append(bbox_area)
                 growing = True
@@ -109,15 +108,16 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                     except IndexError:
                         growing = False
                         break
+                        print("areas array too short")
                     if this_area < last_area:
                         growing = False
+                        print("areas not growing")
                 if growing:
+                    print("areas growing!!!")
                     GPIO.output(led,1)
                     time.sleep(1)
                     GPIO.output(led,0)
                     bbox_areas=[]
-
-        print(names)
 
 
         # Draw keypoints and edges on input image
