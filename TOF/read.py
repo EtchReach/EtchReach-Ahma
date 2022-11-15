@@ -73,7 +73,7 @@ while running:
     speed_arr.append(speed)
     len_speed_arr = len(speed_arr)
 
-    avg_value = 10
+    avg_value = 5
 
     speed_arr = speed_arr[-avg_value:] if len_speed_arr > 10 else speed_arr
 
