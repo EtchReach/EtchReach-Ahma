@@ -120,8 +120,6 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                 else:
                     # time.sleep(3)
                     GPIO.output(led,0)
-                    bbox_areas=[]
-
 
         # Draw keypoints and edges on input image
         # image = utils.visualize(image, detection_result)
