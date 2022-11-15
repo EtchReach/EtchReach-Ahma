@@ -15,16 +15,6 @@ GPIO.setwarnings(False)
 led = 26
 GPIO.setup(led, GPIO.OUT)
 
-print("""distance.py
-
-Display the distance read from the sensor.
-
-Uses the "Short Range" timing budget by default.
-
-Press Ctrl+C to exit.
-
-""")
-
 
 # Open and start the VL53L1X sensor.
 # If you've previously used change-address.py then you
