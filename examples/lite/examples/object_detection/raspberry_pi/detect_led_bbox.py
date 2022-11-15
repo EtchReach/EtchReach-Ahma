@@ -95,7 +95,6 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         detection_result = detector.detect(input_tensor)
 
         # Print labels to terminal
-        names = []
         for detection in detection_result.detections:
             if detection.categories[0].category_name == "bicycle":
                 bbox_area = detection.bounding_box.width * detection.bounding_box.height
@@ -141,7 +140,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         # Stop the program if the ESC key is pressed.
         if cv2.waitKey(1) == 27:
             break
-        cv2.imshow('object_detector', image)
+        # cv2.imshow('object_detector', image)
 
     cap.release()
     cv2.destroyAllWindows()
