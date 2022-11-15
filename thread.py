@@ -96,3 +96,5 @@ if __name__ == "__main__":
     pool = Pool(processes=1)
     r1 = pool.apply_async(TOF)
     
+    pool.close()
+    pool.join()
