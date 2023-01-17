@@ -20,7 +20,7 @@ import cv2
 from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
-import utils
+# import utils
 
 # GPIO initialization
 import RPi.GPIO as GPIO
@@ -31,6 +31,7 @@ GPIO.setwarnings(False)
 led = 26
 GPIO.setup(led, GPIO.OUT)
 
+size_checks=4
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
@@ -72,6 +73,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     detector = vision.ObjectDetector.create_from_options(options)
 
     # Continuously capture images from the camera and run inference
+    bbox_areas=[]
     while cap.isOpened():
         success, image = cap.read()
         if not success:
@@ -90,8 +92,6 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
         # Run object detection estimation using the model.
         detection_result = detector.detect(input_tensor)
-
-        # Print labels to terminal
         names = []
         for detection in detection_result.detections:
             category_name = detection.categories[0].category_name
@@ -105,16 +105,44 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             time.sleep(1)
             GPIO.output(led,0)
 
+
+        # Print labels to terminal
+        # for detection in detection_result.detections:
+        #     if detection.categories[0].category_name == "bicycle":
+        #         bbox_area = detection.bounding_box.width * detection.bounding_box.height
+        #         bbox_areas.append(bbox_area)
+        #         if len(bbox_areas) > 30:
+        #             bbox_areas.pop(0)
+        #         print(bbox_areas)
+        #         growing = True
+        #         for x in range(size_checks):
+        #             this_area = bbox_areas[-1-x]
+        #             try:
+        #                 last_area = bbox_areas[-2-x]
+        #             except IndexError:
+        #                 growing = False
+        #                 print("areas array too short, breaking")
+        #                 break
+        #             if this_area < last_area:
+        #                 growing = False
+        #                 print("areas not growing, breaking")
+        #                 break
+        #         if growing:
+        #             print("areas growing!!!")
+        #             GPIO.output(led,1)
+        #             time.sleep(3)
+        #             GPIO.output(led,0)
+
         # Draw keypoints and edges on input image
         # image = utils.visualize(image, detection_result)
 
         # Calculate the FPS
-        if counter % fps_avg_frame_count == 0:
+        if counter == fps_avg_frame_count:
             end_time = time.time()
             fps = fps_avg_frame_count / (end_time - start_time)
-            print(str(fps) + " FPS")
             start_time = time.time()
-
+            print(str(fps)+" fps")
+            counter = 0
         # Show the FPS
         # fps_text = 'FPS = {:.1f}'.format(fps)
         # text_location = (left_margin, row_size)
@@ -124,7 +152,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         # Stop the program if the ESC key is pressed.
         if cv2.waitKey(1) == 27:
             break
-        cv2.imshow('object_detector', image)
+        # cv2.imshow('object_detector', image)
 
     cap.release()
     cv2.destroyAllWindows()
