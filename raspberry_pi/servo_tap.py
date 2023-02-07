@@ -26,5 +26,3 @@ servo1.ChangeDutyCycle(0)
 servo1.stop()
 GPIO.cleanup()
 print ("Goodbye")
-
-

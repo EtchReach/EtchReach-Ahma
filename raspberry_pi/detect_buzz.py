@@ -21,16 +21,18 @@ import cv2
 from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
-# import utils
+import outputs
 
 # GPIO initialization
 import RPi.GPIO as GPIO
+
+# Output setup
+pin = 26
+type = "tap" # "buzz" or "tap"
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-
-# LED config
-buzzer_pin = 26
-GPIO.setup(buzzer_pin, GPIO.OUT)
+GPIO.setup(pin, GPIO.OUT)
 
 size_checks=4
 
@@ -100,11 +102,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         print(names)
 
         # Bicycle detected
-        if "bicycle" in names or "motorcycle" in names:
-            GPIO.output(buzzer_pin,1)
-            print("Buzzing")
-            time.sleep(1)
-            GPIO.output(buzzer_pin,0)
+        if "bicycle" in names:
+            outputs.output(pin, type)
 
 
         # Print labels to terminal
@@ -138,12 +137,12 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         # image = utils.visualize(image, detection_result)
 
         # Calculate the FPS
-        if counter == fps_avg_frame_count:
-            end_time = time.time()
-            fps = fps_avg_frame_count / (end_time - start_time)
-            start_time = time.time()
-            print(str(fps)+" fps")
-            counter = 0
+        # if counter == fps_avg_frame_count:
+        #     end_time = time.time()
+        #     fps = fps_avg_frame_count / (end_time - start_time)
+        #     start_time = time.time()
+        #     print(str(fps)+" fps")
+        #     counter = 0
         # Show the FPS
         # fps_text = 'FPS = {:.1f}'.format(fps)
         # text_location = (left_margin, row_size)
@@ -151,8 +150,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         #             font_size, text_color, font_thickness)
 
         # Stop the program if the ESC key is pressed.
-        if cv2.waitKey(1) == 27:
-            break
+        # if cv2.waitKey(1) == 27:
+        #     break
         # cv2.imshow('object_detector', image)
 
     cap.release()
@@ -200,4 +199,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    finally:
+        GPIO.cleanup()
+        print("Cleaned up!")
