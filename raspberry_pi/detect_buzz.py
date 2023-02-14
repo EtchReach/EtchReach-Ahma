@@ -28,7 +28,7 @@ import RPi.GPIO as GPIO
 
 # Output setup
 pin = 26
-type = "tap" # "buzz" or "tap"
+type = "buzz" # "buzz" or "tap"
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
