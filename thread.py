@@ -2,7 +2,7 @@ import logging
 # import threading
 from multiprocessing import Pool
 import time
-from raspberry_pi.detect_led_bbox import main
+from raspberry_pi.detect_buzz_bbox import main
 
 #!/usr/bin/env python
 
