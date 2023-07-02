@@ -7,8 +7,8 @@ import 'package:image/image.dart' as imageLib;
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
-import 'stats.dart';
-import 'recognition.dart';
+import 'package:bike_detector/utils/stats.dart';
+import 'package:bike_detector/utils/recognition.dart';
 
 /// Classifier
 class Classifier {
