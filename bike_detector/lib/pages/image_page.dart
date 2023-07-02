@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:bike_detector/utils/networking.dart';
+import 'package:bike_detector/utils/object_detection.dart';
 
 class ImagePage extends StatefulWidget {
   const ImagePage({super.key});
