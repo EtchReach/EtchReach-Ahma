@@ -1,7 +1,6 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:bike_detector/pages/image_page.dart';
+import 'package:bike_detector/pages/settings.dart';
 
 void main() {
   runApp(const ReachAhma());
@@ -37,7 +36,8 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   int currentPage = 0; //created a variable, put before build
   List<Widget> pages = const [
-    ImagePage()
+    ImagePage(),
+    Settings(),
     // add other pages when done
   ];
   @override

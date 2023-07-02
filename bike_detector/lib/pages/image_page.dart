@@ -49,6 +49,7 @@ class _ImagePageState extends State<ImagePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          
           image == null ? const Text("No Connection") : Image.memory(image!),
           const SizedBox(
             height: 20,
