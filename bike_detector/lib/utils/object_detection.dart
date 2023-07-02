@@ -114,7 +114,6 @@ class ObjectDetection {
     for (var i = 0; i < numberOfDetections; i++) {
       final String label = _labels![classes[i]];
       final double score = scores[i];
-      print('label: $label, score: $score');
       if (Constants.labels.contains(label) &&
           score > Constants.classificationThreshold) {
         classifications.add({
