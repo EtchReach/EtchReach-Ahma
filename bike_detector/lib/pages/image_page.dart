@@ -17,7 +17,7 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> {
-  Uint8List? imageBytes;
+
   Timer? t;
   ObjectDetection? objectDetection;
   Uint8List? image;
@@ -26,7 +26,10 @@ class _ImagePageState extends State<ImagePage> {
     t = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       Uint8List? fetchedBytes = await Networking.fetchImage();
       setState(() {
-        imageBytes = fetchedBytes;
+        if (fetchedBytes != null) {
+          Uint8List imageBytes = fetchedBytes;
+          image = objectDetection!.analyseImage(imageBytes);
+        }
       });
     });
   }
@@ -47,7 +50,7 @@ class _ImagePageState extends State<ImagePage> {
   Widget build(BuildContext context) {
     return Center(
       child:
-          imageBytes == null ? const Text("No Connection") : Image.memory(imageBytes!),
+          image == null ? const Text("No Connection") : Image.memory(image!),
     );
   }
 }

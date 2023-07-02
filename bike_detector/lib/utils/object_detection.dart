@@ -57,13 +57,13 @@ class ObjectDetection {
     _labels = labelsRaw.split('\n');
   }
 
-  Uint8List analyseImage(String imagePath) {
+  Uint8List analyseImage(Uint8List imageBytes) {
     log('Analysing image...');
     // Reading image bytes from file
-    final imageData = File(imagePath).readAsBytesSync();
+    // final imageData = File(imagePath).readAsBytesSync();
 
     // Decoding image
-    final image = img.decodeImage(imageData);
+    final image = img.decodeImage(imageBytes);
 
     // Resizing image fpr model, [300, 300]
     final imageInput = img.copyResize(
