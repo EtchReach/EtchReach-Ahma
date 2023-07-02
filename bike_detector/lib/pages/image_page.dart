@@ -37,6 +37,7 @@ class _ImagePageState extends State<ImagePage> {
   @override
   void initState() {
     super.initState();
+    objectDetection = ObjectDetection();
     fetchImage();
   }
 
