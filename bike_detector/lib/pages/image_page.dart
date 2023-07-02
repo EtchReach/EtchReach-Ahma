@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:bike_detector/utils/networking.dart';
 import 'package:vibration/vibration.dart';
