@@ -55,7 +55,7 @@ class _ImagePageState extends State<ImagePage> {
             height: 20,
           ),
           ElevatedButton(
-            child: const Text('Vibrate with pattern and amplitude'),
+            child: const Text('Vibrate'),
             onPressed: () {
               const snackBar = SnackBar(
                 content: Text(
