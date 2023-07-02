@@ -30,13 +30,14 @@
 
 #include "camera_pins.h"
 
-// ===========================
-// Enter your WiFi credentials
-// ===========================
+// Wifi constants
 const char* ssid = "Xiaomi_7660";
 const char* password = "spaghetti";
 
 void startCameraServer();
+
+// LED constants
+const int wifiStatusLedPin = 4;
 
 void setup() {
   Serial.begin(115200);
@@ -124,6 +125,8 @@ void setup() {
   s->set_vflip(s, 1);
 #endif
 
+  pinMode(wifiStatusLedPin, OUTPUT);
+
   WiFi.begin(ssid, password);
   WiFi.setSleep(false);
 
@@ -133,6 +136,8 @@ void setup() {
   }
   Serial.println("");
   Serial.println("WiFi connected");
+
+  digitalWrite(wifiStatusLedPin, HIGH);
 
   startCameraServer();
 

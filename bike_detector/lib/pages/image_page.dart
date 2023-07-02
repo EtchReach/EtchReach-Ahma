@@ -1,11 +1,7 @@
 import 'dart:typed_data';
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:http/http.dart' as http;
 import 'package:bike_detector/utils/networking.dart';
 import 'package:bike_detector/utils/object_detection.dart';
 
@@ -17,7 +13,6 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> {
-
   Timer? t;
   ObjectDetection? objectDetection;
   Uint8List? image;
@@ -25,12 +20,14 @@ class _ImagePageState extends State<ImagePage> {
   void fetchImage() {
     t = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       Uint8List? fetchedBytes = await Networking.fetchImage();
-      setState(() {
-        if (fetchedBytes != null) {
-          Uint8List imageBytes = fetchedBytes;
-          image = objectDetection!.analyseImage(imageBytes);
-        }
-      });
+      if (fetchedBytes != null && objectDetection == null) {
+        Uint8List imageBytes = fetchedBytes;
+        Uint8List? processedImageBytes =
+            objectDetection?.analyseImage(imageBytes);
+        setState(() {
+          image = processedImageBytes;
+        });
+      }
     });
   }
 
@@ -50,8 +47,7 @@ class _ImagePageState extends State<ImagePage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:
-          image == null ? const Text("No Connection") : Image.memory(image!),
+      child: image == null ? const Text("No Connection") : Image.memory(image!),
     );
   }
 }
