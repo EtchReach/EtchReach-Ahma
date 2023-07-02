@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Networking {
@@ -11,7 +12,7 @@ class Networking {
         return response.bodyBytes;
       }
     } catch (e) {
-      print('$e');
+      debugPrint('$e');
     }
     return null;
   }
