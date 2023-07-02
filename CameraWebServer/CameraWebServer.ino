@@ -138,6 +138,8 @@ void setup() {
   Serial.println("WiFi connected");
 
   digitalWrite(wifiStatusLedPin, HIGH);
+  delay(2000);
+  digitalWrite(wifiStatusLedPin, LOW);
 
   startCameraServer();
 

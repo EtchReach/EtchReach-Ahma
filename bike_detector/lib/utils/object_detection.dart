@@ -18,6 +18,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
+import 'constants.dart';
 
 class ObjectDetection {
   static const String _modelPath = 'assets/models/ssd_mobilenet.tflite';
@@ -57,7 +58,7 @@ class ObjectDetection {
     _labels = labelsRaw.split('\n');
   }
 
-  Uint8List analyseImage(Uint8List imageBytes) {
+  Map analyseImage(Uint8List imageBytes) {
     log('Analysing image...');
     // Reading image bytes from file
     // final imageData = File(imagePath).readAsBytesSync();
@@ -65,7 +66,7 @@ class ObjectDetection {
     // Decoding image
     final image = img.decodeImage(imageBytes);
 
-    // Resizing image fpr model, [300, 300]
+    // Resizing image for model, [300, 300]
     final imageInput = img.copyResize(
       image!,
       width: 300,
@@ -97,7 +98,7 @@ class ObjectDetection {
     // Classes
     final classesRaw = output.elementAt(1).first as List<double>;
     final classes = classesRaw.map((value) => value.toInt()).toList();
-    log('Classes: $classes');
+    log('Classes: $classes, Labels: $_labels');
 
     // Scores
     final scores = output.elementAt(2).first as List<double>;
@@ -109,40 +110,50 @@ class ObjectDetection {
     log('Number of detections: $numberOfDetections');
 
     log('Classifying detected objects...');
-    final List<String> classication = [];
+    final List<Map<String, dynamic>> classifications = [];
     for (var i = 0; i < numberOfDetections; i++) {
-      classication.add(_labels![classes[i]]);
-    }
-
-    log('Outlining objects...');
-    for (var i = 0; i < numberOfDetections; i++) {
-      if (scores[i] > 0.6) {
-        // Rectangle drawing
-        img.drawRect(
-          imageInput,
-          x1: locations[i][1],
-          y1: locations[i][0],
-          x2: locations[i][3],
-          y2: locations[i][2],
-          color: img.ColorRgb8(255, 0, 0),
-          thickness: 3,
-        );
-
-        // Label drawing
-        img.drawString(
-          imageInput,
-          '${classication[i]} ${scores[i]}',
-          font: img.arial14,
-          x: locations[i][1] + 1,
-          y: locations[i][0] + 1,
-          color: img.ColorRgb8(255, 0, 0),
-        );
+      final String label = _labels![classes[i]];
+      final double score = scores[i];
+      print('label: $label, score: $score');
+      if (Constants.labels.contains(label) &&
+          score > Constants.classificationThreshold) {
+        classifications.add({
+          'label': label,
+          'score': scores[i],
+          'location': locations[i],
+        });
       }
     }
 
-    log('Done.');
+    log('Outlining objects...');
+    for (var i = 0; i < classifications.length; i++) {
+      // Rectangle drawing
+      img.drawRect(
+        imageInput,
+        x1: classifications[i]['location'][1],
+        y1: classifications[i]['location'][0],
+        x2: classifications[i]['location'][3],
+        y2: classifications[i]['location'][2],
+        color: img.ColorRgb8(255, 0, 0),
+        thickness: 3,
+      );
 
-    return img.encodeJpg(imageInput);
+      // Label drawing
+      img.drawString(
+        imageInput,
+        '${classifications[i]['label']} ${classifications[i]["score"]}',
+        font: img.arial14,
+        x: classifications[i]['location'][1] + 1,
+        y: classifications[i]['location'][0] + 1,
+        color: img.ColorRgb8(255, 0, 0),
+      );
+    }
+
+    log('Done.');
+    return {
+      "imageBytes": img.encodeJpg(imageInput),
+      "objectCount": classifications.length,
+    };
   }
 
   List<List<Object>> _runInference(
