@@ -36,7 +36,6 @@ class _ImagePageState extends State<ImagePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     t?.cancel();
   }
