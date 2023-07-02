@@ -22,8 +22,15 @@ class _ImagePageState extends State<ImagePage> {
     t = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       Uint8List? fetchedBytes = await Networking.fetchImage();
       if (fetchedBytes != null && objectDetection != null) {
-        Uint8List? processedImageBytes =
-            objectDetection?.analyseImage(fetchedBytes);
+        Map processedInformation = objectDetection!.analyseImage(fetchedBytes);
+        Uint8List processedImageBytes = processedInformation['imageBytes'];
+        int objectCount = processedInformation['objectCount'];
+        if (objectCount > 0) {
+          Vibration.vibrate(
+            pattern: [1000, 1000],
+            intensities: [128, 128],
+          );
+        }
         setState(() {
           image = processedImageBytes;
         });
@@ -59,12 +66,9 @@ class _ImagePageState extends State<ImagePage> {
             inactiveBgColor: Colors.grey,
             inactiveFgColor: Colors.white,
             totalSwitches: 2,
-            icons: [
-              Icons.videocam_off_outlined,
-              Icons.videocam
-            ],
+            icons: const [Icons.videocam_off_outlined, Icons.videocam],
             iconSize: 30.0,
-            activeBgColors: [
+            activeBgColors: const [
               [Colors.black45, Colors.black26],
               [Colors.yellow, Colors.orange]
             ],
@@ -76,23 +80,21 @@ class _ImagePageState extends State<ImagePage> {
               print('switched to: $index');
             },
           ),
-          image == null ? const Text("No Connection") : Image.memory(image!),
+          image == null
+              ? const Text("No Connection")
+              : Image.memory(
+                  image!,
+                  gaplessPlayback: true,
+                ),
           const SizedBox(
             height: 20,
           ),
           ElevatedButton(
             child: const Text('Vibrate'),
             onPressed: () {
-              const snackBar = SnackBar(
-                content: Text(
-                  'Vibrate',
-                ),
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
               Vibration.vibrate(
-                pattern: [3000],
-                intensities: [128],
+                pattern: [1000, 1000],
+                intensities: [128, 128],
               );
             },
           ),
