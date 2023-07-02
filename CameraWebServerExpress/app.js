@@ -3,6 +3,7 @@ const app = express();
 
 // Endpoint to send the image as the API response
 app.get("/capture", (req, res) => {
+  // Change the value of `imagePath` depending on which image you want to return
   const imagePath = "/assets/images/bike_person.png";
 
   // Send the image file as the response

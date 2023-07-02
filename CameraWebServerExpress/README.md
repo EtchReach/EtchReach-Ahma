@@ -1,6 +1,6 @@
 # Express Camera Web Server
 
-This folder conatins the code for an `express` server that mocks the ESP32 camera API. It returns an image from the `images` folder when the `/capture` endpoint is called.
+This folder contains the code for an `express` server that mocks the ESP32 camera API. It returns an image from the `images` folder when the `/capture` endpoint is called.
 
 ## Setup
 
