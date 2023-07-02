@@ -19,7 +19,12 @@ class ReachAhma extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const Scaffold(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Bike Detector'),
+          backgroundColor: Colors.red,
+          leading: Icon(Icons.pedal_bike),
+        ),
         body: RootPage(),
       ),
     );
@@ -51,12 +56,10 @@ class _RootPageState extends State<RootPage> {
           NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
         ],
         onDestinationSelected: (int index) {
-          
-            setState(() {
-              currentPage = index;
-            });
-          },
-
+          setState(() {
+            currentPage = index;
+          });
+        },
         selectedIndex: currentPage,
         backgroundColor: Colors.red,
         indicatorColor: Colors.white,
