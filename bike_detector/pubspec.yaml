@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    assets:
+    - assets/efficientdet_lite0.tflite
 
 
   # The following adds the Cupertino Icons font to your application.
