@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:bike_detector/utils/networking.dart';
 import 'package:vibration/vibration.dart';
+import 'package:bike_detector/utils/object_detection.dart';
 
 class ImagePage extends StatefulWidget {
   const ImagePage({super.key});
@@ -13,14 +14,18 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> {
-  Uint8List? imageBytes;
   Timer? t;
+  ObjectDetection? objectDetection;
+  Uint8List? image;
+
   void fetchImage() {
     t = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       Uint8List? fetchedBytes = await Networking.fetchImage();
-      if (fetchedBytes != null) {
+      if (fetchedBytes != null && objectDetection != null) {
+        Uint8List? processedImageBytes =
+            objectDetection?.analyseImage(fetchedBytes);
         setState(() {
-          imageBytes = fetchedBytes;
+          image = processedImageBytes;
         });
       }
     });
@@ -29,12 +34,12 @@ class _ImagePageState extends State<ImagePage> {
   @override
   void initState() {
     super.initState();
+    objectDetection = ObjectDetection();
     fetchImage();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     t?.cancel();
   }
@@ -45,12 +50,7 @@ class _ImagePageState extends State<ImagePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          imageBytes == null
-              ? const Text("Hello")
-              : Image.memory(
-                  imageBytes!,
-                  gaplessPlayback: true,
-                ),
+          image == null ? const Text("No Connection") : Image.memory(image!),
           const SizedBox(
             height: 20,
           ),
