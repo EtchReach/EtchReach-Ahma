@@ -20,10 +20,9 @@ class _ImagePageState extends State<ImagePage> {
   void fetchImage() {
     t = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       Uint8List? fetchedBytes = await Networking.fetchImage();
-      if (fetchedBytes != null && objectDetection == null) {
-        Uint8List imageBytes = fetchedBytes;
+      if (fetchedBytes != null && objectDetection != null) {
         Uint8List? processedImageBytes =
-            objectDetection?.analyseImage(imageBytes);
+            objectDetection?.analyseImage(fetchedBytes);
         setState(() {
           image = processedImageBytes;
         });
